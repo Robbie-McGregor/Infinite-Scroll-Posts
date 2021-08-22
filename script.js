@@ -2,7 +2,7 @@ const postContainer = document.getElementById('posts-container')
 const loading = document.querySelector('.loader')
 const filter = document.getElementById('filter')
 
-let limit = 3
+let limit = 7
 let page = 1
 
 
@@ -29,10 +29,33 @@ async function showPosts() {
         `
         postContainer.appendChild(postEl)
     });
-    page++
+    console.log(page)
+}
+
+//Show loader & fetch more posts
+function showLoading() {
+    loading.classList.add('show')
+    setTimeout(() => {
+        loading.classList.remove('show')
+        setTimeout(() => {
+            page++
+            showPosts()
+        }, 300)
+    }, 1000)
+    // showPosts()
+
 }
 
 //Show initial posts
 showPosts()
+
+window.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+        showLoading()
+
+    }
+})
 
 
