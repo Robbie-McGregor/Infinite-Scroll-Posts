@@ -8,7 +8,7 @@ let page = 1
 
 //Fetch POSTS from API
 async function getPosts() {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}_&page=${page}`);
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`);
 
     const data = await res.json()
 
@@ -29,7 +29,6 @@ async function showPosts() {
         `
         postContainer.appendChild(postEl)
     });
-    console.log(page)
 }
 
 //Show loader & fetch more posts
@@ -46,6 +45,22 @@ function showLoading() {
 
 }
 
+//Filter Posts by input
+function filterPosts(e) {
+    const term = e.target.value.toUpperCase()
+    const posts = document.querySelectorAll('.post')
+    posts.forEach(post => {
+        const title = post.querySelector('.post-title').innerText.toUpperCase()
+        const body = post.querySelector('.post-body').innerText.toUpperCase()
+
+        if (title.indexOf(term) > -1 || body.indexOf(term) > -1) {
+            post.style.display = 'flex'
+        } else {
+            post.style.display = 'none'
+        }
+    })
+}
+
 //Show initial posts
 showPosts()
 
@@ -58,4 +73,4 @@ window.addEventListener('scroll', () => {
     }
 })
 
-
+filter.addEventListener('input', filterPosts)
